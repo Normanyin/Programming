@@ -1,0 +1,32 @@
+adult.data adult.test 分别是原始数据训练集 和 原始数据测试集
+adult.data.err 是数据训练集中有‘？’的数据，adult.data.err.vector 是其对应的vector
+adult.data.right 是训练集完整的数据。
+adult.test 中数据均为完整良好数据。
+
+处理的格式是，以workclass属性为例子说明：
+一。	workclass: Private, Self-emp-not-inc, Self-emp-inc, Federal-gov, Local-gov, State-gov, Without-pay, Never-worked
+      我分别可以队workclass的属性以index来标号：1，2，3，4,5,6,7,8。。。。。。（attion，都是以 1开始的标号）
+
+	所以以此类推到其他的属性。
+	结果：>50K 设为1，<=50K 为0.
+
+	eg：  25, Private, 226802, 11th, 7, Never-married, Machine-op-inspct, Own-child, Black, Male, 0, 0, 40, United-States, <=50K.
+
+二。  这里的属性分别是：age，workclass，fnlwgt，education，education-num，marital-status，occupation，relationship，race，sex，capital-gain，capitial-loss，hour-per-week，native-country，result
+
+	但是我处理的时候把他们的顺序稍微变了一下：
+	把连续值放到了前6个分别是：age ，fnlwgt，education-num，capital-gain，capital-loss，hour-per-work，
+	对应下来就是：workclass，education，marital-status，occupation，relationship，race，sex，，native-country，result
+
+	所以实际顺序是：age ，fnlwgt，education-num，capital-gain，capital-loss，hour-per-week，workclass，education，marital-status，occupation，relationship，race，sex，，native-country，result
+
+	25, Private, 226802, 11th, 7, Never-married, Machine-op-inspct, Own-child, Black, Male, 0, 0, 40, United-States, <=50K.
+	所以对应的结果是：
+	25（age）,226802（fnlwgt）,7（education-num）,0（capital-gain）,0（capital-loss）,40（hour-per-week）,1（Private）,3（11th）,3（Never-married）,8（Machine-op-inspct）,2（Own-child）,5,2,1,0
+
+三。  训练数据中所有的未知数据‘？’，在向量文件中都保留为？，这个根据自己的需求处理。 
+
+四。		matlab中用：	data = load('adult.data');来读取txt中数据
+			X = data(:, [1, 2]); y = data(:, 3); 用来提取数据和结果。
+  
+五。  程序再为data2vector.py .可以根据自己的需要进行更改。
